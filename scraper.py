@@ -22,13 +22,13 @@ def get(team_number: int) -> dict:
             "valid": False
         }
     
+    # Create a headless Firefox instance
+    options = Options()
+    service = Service(os.path.join(os.getcwd(), "geckodriver"), 0, None, os.path.devnull)
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(options=options, service=service)
+    
     try:
-        # Create a headless Firefox instance
-        options = Options()
-        service = Service(os.path.join(os.getcwd(), "geckodriver"), 0, None, os.path.devnull)
-        options.add_argument("--headless")
-        driver = webdriver.Firefox(options=options, service=service)
-
         # Try with last year's season
         usingThisYear = False
         driver.get(_link(str(team_number), -1))
