@@ -2,12 +2,12 @@
     Driver for FIRSTTeamAPI.
     @author: Lucas Bubner, 2023
 """
-from flask import Flask
+from flask import Flask, redirect
 import scraper
 
 app = Flask(__name__)
 
-@app.get("/get_team/{team_number}")
+@app.route("/get_team/<int:team_number>")
 def get(team_number: int):
     """
         Get information about a team number.
@@ -19,3 +19,10 @@ def get(team_number: int):
         "season": data.get("season"),
         "data": data.get("data") or []
     }
+
+@app.errorhandler(404)
+def not_found(e):
+    """
+        Redirect invalid requests to the GitHub page.
+    """
+    return redirect("https://github.com/hololb/FIRSTTeamAPI/")
