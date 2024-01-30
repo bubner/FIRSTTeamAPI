@@ -65,12 +65,13 @@ def get(team_number: int) -> dict:
 
 def _query(team_number: int, year: int) -> str:
     # Mappings for the season selector
-    # These are defined by FIRST
+    # These are defined by FIRST, and we will only go back the past 4 seasons
+    # as teams that have not registered in 4 years are probably not active anymore
     years = {
         2023: [323, 321, 325, 319],
         2022: [311, 309, 313, 307],
         2021: [299, 297, 301, 295],
-        2020: [277, 275, 279, 273],
+        2020: [287, 285, 289, 283],
     }.get(year)
 
     # Convert mappings into the suffix for the query
