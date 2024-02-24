@@ -27,5 +27,5 @@ def not_found(e):
     """
         Redirect invalid requests to the GitHub page.
     """
-    return redirect("https://github.com/hololb/FIRSTTeamAPI/"), 404, {"Refresh": "1; url=https://github.com/hololb/FIRSTTeamAPI/"}
+    return redirect("https://github.com/bubner/FIRSTTeamAPI/"), 404, {"Refresh": "1; url=https://github.com/bubner/FIRSTTeamAPI/"}
 

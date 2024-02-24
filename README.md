@@ -80,5 +80,5 @@ Input:
 ```/``` ```/blah``` ```/get_team/blah```  <br> <br>
 Output:
 ```
-404 Not Found <redirect to https://github.com/hololb/FIRSTTeamAPI>
+404 Not Found <redirect to https://github.com/bubner/FIRSTTeamAPI>
 ```
