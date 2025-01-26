@@ -18,17 +18,16 @@ def get(team_number: int) -> dict:
             "valid": False
         }
 
-    # Try last season first, incase the team has not registered for the current season yet
-    res = urlopen(_query(team_number, datetime.now().year - 1))
-    bigdata = json.loads(res.read().decode("utf-8"))
-
-    if not bigdata.get("hits").get("hits"):
-        # Try again with current season for new teams
-        res = urlopen(_query(team_number, datetime.now().year))
+    # Try backwards to get some data
+    year = datetime.now().year
+    bigdata = {}
+    while not bigdata or not bigdata.get("hits").get("hits") and year >= 2021:
+        res = urlopen(_query(team_number, year))
         bigdata = json.loads(res.read().decode("utf-8"))
+        year -= 1
     
-    if not bigdata.get("hits").get("hits"):
-        # Stop at this point, if a team is over two years unregistered they are probably not active
+    if not bigdata or not bigdata.get("hits").get("hits"):
+        # Stop at this point, if a team is over four years unregistered they are probably not active
         return {
             "valid": False
         }
@@ -65,14 +64,15 @@ def get(team_number: int) -> dict:
 
 def _query(team_number: int, year: int) -> str:
     # Mappings for the season selector
-    # These are defined by FIRST, and we will only go back the past 4 seasons
-    # as teams that have not registered in 4 years are probably not active anymore
-    years = {
+    # These are defined by FIRST, so they need to be updated per season
+    # They can be found by analysing the HTML `<input type="hidden" name="seasonsFilter" value="335|333|337|331" id="inpSeasonsFilter" tabindex="9">` on the search page
+    yrs = {
+        2024: [335, 333, 337, 331],
         2023: [323, 321, 325, 319],
         2022: [311, 309, 313, 307],
         2021: [299, 297, 301, 295],
-        2020: [287, 285, 289, 283],
-    }.get(year)
+    }
+    years = yrs.get(year, yrs.get(2024)) # wrap to 2024
 
     # Convert mappings into the suffix for the query
     season_selector = ",{'bool':{'should':[{'match':{'fk_program_seasons':'%s'}},{'match':{'fk_program_seasons':'%s'}},{'match':{'fk_program_seasons':'%s'}},{'match':{'fk_program_seasons':'%s'}}]}}]}},'sort':'team_nickname.raw'}" % tuple(years)
