@@ -1,5 +1,5 @@
 # FIRSTTeamAPI
-### Live at https://firstteamapi.vercel.app/get_team/TEAM_NUMBER_HERE
+### Live at https://firstteam.api.bubner.me/get_team/TEAM_NUMBER_HERE
 WSGI API to retrieve information about a FIRST-registered team
 # Example usage
 Input:  
